@@ -1,0 +1,6 @@
+node_modules/
+.env
+blockchain/artifacts/
+blockchain/cache/
+frontend/build/
+zk-circuits/keys/*.zkey
