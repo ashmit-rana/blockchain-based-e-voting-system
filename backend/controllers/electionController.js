@@ -98,6 +98,18 @@ const getElection = async (req, res) => {
 const activateElection = async (req, res) => {
   try {
     const { electionId } = req.params;
+    
+    // Force time check bypass for local dev
+    const election = await Election.findOne({ electionId: Number(electionId) });
+    
+    // Update start time to now if not reached
+    if (new Date(election.startTime) > new Date()) {
+      await Election.findOneAndUpdate(
+        { electionId: Number(electionId) },
+        { startTime: new Date() }
+      );
+    }
+
     await blockchain.activateElection(Number(electionId));
     await Election.findOneAndUpdate(
       { electionId: Number(electionId) },

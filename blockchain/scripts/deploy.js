@@ -96,20 +96,28 @@ async function main() {
     JSON.stringify(addresses, null, 2)
   );
 
-  // Save .env for backend
-  const envContent = `
-ELECTION_MANAGER_ADDRESS=${electionManagerAddress}
-VOTER_REGISTRY_ADDRESS=${voterRegistryAddress}
-VOTING_BALLOT_ADDRESS=${votingBallotAddress}
-ZK_VERIFIER_ADDRESS=${zkVerifierAddress}
-RESULT_TALLY_ADDRESS=${resultTallyAddress}
-DEPLOYER_ADDRESS=${deployer.address}
-`.trim();
+  // Update only contract addresses in .env
+  const envPath = path.join(__dirname, "../../backend/.env");
+  let envContent = fs.existsSync(envPath) ? fs.readFileSync(envPath, "utf8") : "";
 
-  fs.writeFileSync(
-    path.join(__dirname, "../../backend/.env"),
-    envContent
-  );
+  const updates = {
+    ELECTION_MANAGER_ADDRESS: electionManagerAddress,
+    VOTER_REGISTRY_ADDRESS: voterRegistryAddress,
+    VOTING_BALLOT_ADDRESS: votingBallotAddress,
+    ZK_VERIFIER_ADDRESS: zkVerifierAddress,
+    RESULT_TALLY_ADDRESS: resultTallyAddress,
+    DEPLOYER_ADDRESS: deployer.address,
+  };
+
+  for (const [key, value] of Object.entries(updates)) {
+    if (envContent.includes(key)) {
+      envContent = envContent.replace(new RegExp(`${key}=.*`), `${key}=${value}`);
+    } else {
+      envContent += `\n${key}=${value}`;
+    }
+  }
+
+  fs.writeFileSync(envPath, envContent);
 
   console.log("✅ Addresses saved to blockchain/deployments/localhost.json");
   console.log("✅ Backend .env updated with contract addresses");

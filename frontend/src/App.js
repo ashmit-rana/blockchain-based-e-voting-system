@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
+
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import VoterPortal from "./pages/VoterPortal/VoterPortal";
+import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import Results from "./pages/Results/Results";
+
+const ProtectedRoute = ({ children, requiredRole }) => {
+  const { token, role } = useAuth();
+  if (!token) return <Navigate to="/" />;
+  if (requiredRole && role !== requiredRole) return <Navigate to="/" />;
+  return children;
+};
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/voter" element={<VoterPortal />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/results" element={<Results />} />
+      </Routes>
+    </Router>
   );
 }
 

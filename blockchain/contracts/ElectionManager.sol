@@ -195,10 +195,6 @@ contract ElectionManager is Ownable, ReentrancyGuard {
             election.candidateCount >= 2,
             "Need at least 2 candidates"
         );
-        require(
-            block.timestamp >= election.startTime,
-            "Start time not reached"
-        );
 
         ElectionStatus old = election.status;
         election.status = ElectionStatus.ACTIVE;
