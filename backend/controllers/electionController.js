@@ -130,25 +130,26 @@ const closeElection = async (req, res) => {
     // Calculate results
     const candidates = await blockchain.getAllCandidates(Number(electionId));
     let winnerId = 0;
-    let maxVotes = 0;
-    let isTied = false;
-    let totalVotes = 0;
-    const candidateIds = [];
-    const voteCounts = [];
+let maxVotes = -1;
+let isTied = false;
+let totalVotes = 0;
+const candidateIds = [];
+const voteCounts = [];
 
-    for (const c of candidates) {
-      const votes = Number(c.voteCount);
-      candidateIds.push(Number(c.id));
-      voteCounts.push(votes);
-      totalVotes += votes;
-      if (votes > maxVotes) {
-        maxVotes = votes;
-        winnerId = Number(c.id);
-        isTied = false;
-      } else if (votes === maxVotes && votes > 0) {
-        isTied = true;
-      }
-    }
+for (const c of candidates) {
+  const votes = Number(c.voteCount);
+  const id = Number(c.id);
+  candidateIds.push(id);
+  voteCounts.push(votes);
+  totalVotes += votes;
+  if (votes > maxVotes) {
+    maxVotes = votes;
+    winnerId = id;
+    isTied = false;
+  } else if (votes === maxVotes && votes > 0) {
+    isTied = true;
+  }
+}
 
     const winner = candidates.find(c => Number(c.id) === winnerId);
     const winnerName = winner ? winner.name : "No winner";

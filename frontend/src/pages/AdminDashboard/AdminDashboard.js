@@ -13,7 +13,7 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("elections");
   const [adminPassword, setAdminPassword] = useState("");
   const [walletAddress, setWalletAddress] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(!!token);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn) fetchElections();
