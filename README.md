@@ -1,4 +1,4 @@
-<h1 align="center">📦 Blockchain Based E-Voting System</h1>
+<h1 align="center">🗳️ Blockchain Based E-Voting System</h1>
 
 ![Blockchain](https://img.shields.io/badge/Blockchain-Ethereum-627EEA?style=for-the-badge&logo=ethereum&logoColor=white)
 ![Solidity](https://img.shields.io/badge/Solidity-0.8.28-363636?style=for-the-badge&logo=solidity&logoColor=white)
